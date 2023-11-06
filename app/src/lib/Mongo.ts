@@ -1,7 +1,9 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
+import config from "../config/config";
+
 
 export default class MongoDB {
-    private url = "mongodb+srv://jlvila:jj123456@jlvila.w8q6kim.mongodb.net/ECOMMERCE00?retryWrites=true&w=majority"
+    private url = config.Mongourl
     private client: any = null;
 
     constructor() {
@@ -11,101 +13,150 @@ export default class MongoDB {
             console.log(error);
         }
     }
-    // CREAR CARRITO - OK -
-    async createNewCart() {
+
+    async create(obj: any, dbCollection: string) {
+        let collection = "";
+        let objeto = "";
+
+        if(dbCollection === "CARTS") {
+            collection = dbCollection
+            objeto = "carrito";
+        }
+
+        if(dbCollection === "PRODUCTS") {
+            collection = dbCollection 
+            objeto = "producto";
+        }
+
+        if(dbCollection === "CHAT") {
+            collection = dbCollection
+            objeto = "chat";
+        }
+
         try {
             await this.client.connect();
             const db = this.client.db('ECOMMERCE00');
-            const dataOnCollection = db.collection('CARTS');
-            const newCart = await dataOnCollection.insertMany([{ nombre: "carrito1", productos: [] }]);
-            console.log(newCart)
+            const dataOnCollection = db.collection(collection);
+            const objetoCreado = await dataOnCollection.insertMany( obj );
+            console.log(`${objeto} creado`);
+            return objetoCreado;
         } catch (error: any) {
-            console.log(`no se pudo crear un nuevo carrito ---> ${error}`);
+            console.log(`no se pudo crear nuevo objeto ---> ${error}`);
+            return false;
         }
     }
 
-    //DELETE - OK -
-    async deleteCart() {
-        try {
-            await this.client.connect();
-            const db = this.client.db('ECOMMERCE00');
-            const dataOnCollection = db.collection('CARTS');
-            const result = await dataOnCollection.deleteOne({ nombre: "carrito1" });
-            console.log(result);
-        } catch (error: any) {
-            console.log(`No se pudo eliminar el carrito ---> ${error}`);
-        }
-    }
+    async read(id: any, dbCollection: string) {
+        let collection = "";
+        let objeto = "";
 
-    //UPDATE ...... VER NO ANDA
-    async updateCart() {
-        try {
-            await this.client.connect();
-            const db = this.client.db('ECOMMERCE00');
-            const dataOnCollection = db.collection('CARTS');
-            const result = await dataOnCollection.updateOne({ _id: "6545b308fb717f4f8a9ebc2e" }, { $set: { nombre: "carritwo2", productos: [] } });
-            console.log(result);
-        } catch (error: any) {
-            console.log(`no se pudo actualizar carrito ---> ${error}`);
+        if(dbCollection === "CARTS") {
+            collection = dbCollection
+            objeto = "carritos";
         }
-    }
 
-    // OBTENGO CARRITOS - OK -
-    async getCart() {
-        try {
-            await this.client.connect();
-            const db = this.client.db('ECOMMERCE00');
-            const dataOnCollection = db.collection('CARTS');
-            const result = await dataOnCollection.find({}).toArray();
-            console.log(result);
-        } catch (error) {
-            console.log("No se pudo obtener el carrito");
+        if(dbCollection === "PRODUCTS") {
+            collection = dbCollection 
+            objeto = "productos";
         }
-    }
-    //-------------------------------------------------------------------------------------------
-    //AGREGA UN PRODUCTO NUEVO - OK -
-    async createNewProduct() {
-        try {
-            await this.client.connect();
-            const db = this.client.db('ECOMMERCE00');
-            const dataOnCollection = db.collection('PRODUCTS');
-            const newProduct = await dataOnCollection.insertOne({ _id: "102", title: "Agua Salus sin gas", description: "Botella 1l", price: 12, thumbnail: "https://devotouy.vtexassets.com/arquivos/ids/928754-1200-auto?v=638290", code: 60001, stock: 212, status: "true", category: "bebidas" });
-            console.log(newProduct)
-        } catch (error: any) {
-            return "no se pudo crear nuevo producto";
-        }
-    }
 
-    //ELIMINA UN PRODUCTO - OK -
-    async deleteProduct() {
+        if(dbCollection === "CHAT") {
+            collection = dbCollection
+            objeto = "chat";
+        }
+
+        if (id === undefined) {
             try {
                 await this.client.connect();
                 const db = this.client.db('ECOMMERCE00');
-                const dataOnCollection = db.collection('PRODUCTS');
-                const result = await dataOnCollection.deleteOne({ _id: '102' });
-                console.log(result);
-            } catch (error: any) {
-                console.log(`No se pudo eliminar el producto ---> ${error}`);
+                const dataOnCollection = db.collection(collection);
+                const result = await dataOnCollection.find({}).toArray();
+                console.log(`Se lee la coleccion ${objeto}`);
+                return result;
+            } catch (error) {
+                console.log("No se pudo obtener listado de carritos");
+                return false;
             }
         }
-    //UPDATE ...... VER NO ANDA
-    updateProduct() {
-        try {
-            return "producto actualizado";
-        } catch (error: any) {
-            return "no se pudo actualizar producto";
-        }
-    }
-    //OBTIENE PRODUCTOS - OK -
-    async getProduct() {
+
         try {
             await this.client.connect();
             const db = this.client.db('ECOMMERCE00');
-            const dataOnCollection = db.collection('PRODUCTS');
-            const result = await dataOnCollection.find({}).toArray();
-            console.log(result);
+            const dataOnCollection = db.collection(collection);
+            const result = await dataOnCollection.findOne({_id: new ObjectId(id)});
+            console.log(`Se lee la coleccion ${objeto}`);
+            return result;
+        } catch (error) {
+            console.log("No se pudo obtener listado de carritos");
+            return false;
+        }
+
+    }
+
+
+    async delete(id: any, dbCollection: string) {
+        let collection = "";
+        let objeto = "";
+
+        if(dbCollection === "CARTS") {
+            collection = dbCollection
+            objeto = "carrito";
+        }
+
+        if(dbCollection === "PRODUCTS") {
+            collection = dbCollection 
+            objeto = "producto";
+        }
+
+        if(dbCollection === "CHAT") {
+            collection = dbCollection 
+            objeto = "chat";
+        }
+
+        try {
+            await this.client.connect();
+            const db = this.client.db('ECOMMERCE00');
+            const dataOnCollection = db.collection(collection);
+            const objetoEliminado = await dataOnCollection.deleteOne({ _id: new ObjectId(id) });
+            console.log(`${objeto} eliminado`);
+            return objetoEliminado;
         } catch (error: any) {
-            return "no se pudo obtener producto";
+            console.log(`no se pudo eliminar ${objeto} ---> ${error}`);
+            return false;
+        }
+    }
+
+    async update(id: any, dataActualizada: any, dbCollection: string) {
+        let collection = "";
+        let objeto = "";
+
+        if(dbCollection === "CARTS") {
+            collection = dbCollection
+            objeto = "carrito";
+        }
+
+        if(dbCollection === "PRODUCTS") {
+            collection = dbCollection 
+            objeto = "producto";
+        }
+        
+        if(dbCollection === "CHAT") {
+            collection = dbCollection 
+            objeto = "chat";
+        }
+
+        try {
+            await this.client.connect();
+            const db = this.client.db('ECOMMERCE00');
+            const dataOnCollection = db.collection(collection);
+            const objetoActualizado = await dataOnCollection.updateOne({ _id: new ObjectId(id) }, { $set: dataActualizada});
+            console.log(`${objeto} actualizado`);
+            return objetoActualizado;
+        } catch (error: any) {
+            console.log(`no se pudo actualizar ${objeto} ---> ${error}`);
+            return false;
         }
     }
 }
+
+

@@ -1,7 +1,14 @@
 import MongoDB from "../../lib/Mongo";
+import { Request } from "express";
 
-export default function() {
+export default async function(req: Request) {
+    const pid = req.params.pid;
+    const dataActualizada = req.body;
     const mongoDB = new MongoDB();
-    console.log(mongoDB.updateProduct());
-    return { code: 200, data: "Update Product" }
+    const resultado = await mongoDB.update(pid, dataActualizada, "PRODUCTS");
+    if(!resultado) {
+        return { code: 404, data: "No se pudo actualizar el producto" }
+    }
+    
+    return { code: 200, data: resultado }
 }

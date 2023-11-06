@@ -7,6 +7,11 @@ import deleteProductController from "./products/deleteProduct.controller";
 import getProductController from "./products/getProduct.controller";
 import updateProductController from "./products/updateProduct.controller";
 
+import createChatController from "./chat/createChat.controller";
+import getChatController from "./chat/getChat.controller";
+import deleteChatController from "./chat/deleteChat.controller";
+import updateChatController from "./chat/updateChat.controller";
+
 export { 
     createCartController, 
     deleteCartController,
@@ -16,4 +21,9 @@ export {
     deleteProductController,
     getProductController,
     updateProductController,
+
+    createChatController,
+    getChatController,
+    deleteChatController,
+    updateChatController,
 }
