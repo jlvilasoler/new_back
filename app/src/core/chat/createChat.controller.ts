@@ -1,4 +1,4 @@
-import MongoDB from "../../lib/Mongo";
+import MongoDB from "../../persistence/dao/mongoDB/Mongo";
 import { Request } from "express";
 import ChatService from "../../services/chat.service";
 

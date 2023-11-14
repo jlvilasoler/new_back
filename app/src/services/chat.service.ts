@@ -1,4 +1,4 @@
-import MongoDB from "../lib/Mongo";
+import MongoDB from "../persistence/dao/mongoDB/Mongo";
 
 const mongo = new MongoDB() 
 export default class ChatService {

@@ -18,12 +18,12 @@ btnSend.addEventListener("click", () => {
             user: usuario,
             mensaje: mensaje,
         });
-        //console.log()"Mensaje enviado:", mensaje);
+        console.log("Mensaje enviado:", mensaje);
         caja.value = "";
     }
 });
 
-/*
+
 caja.addEventListener("change", () => {
     const mensaje = caja.value.trim(); // Obtenemos el contenido del input y eliminamos espacios en blanco al principio y al final
     if (mensaje !== "") {
@@ -31,14 +31,11 @@ caja.addEventListener("change", () => {
             user: usuario,
             mensaje: mensaje,
         });
-        //console.log()"Mensaje enviado:", mensaje);
+        console.log("Mensaje enviado:", mensaje);
         caja.value = "";
     }
-}); */
+});
 
-
-
-/////////////////////////////////////////////////
 
 socket.on("nuevo-mensaje", async (mensajes) => {
     const mensajesMostrar = mensajes.map(({user, mensaje}) => {
@@ -47,7 +44,6 @@ socket.on("nuevo-mensaje", async (mensajes) => {
     contenido.innerHTML = mensajesMostrar.join('');
     console.log(mensajes)
 });
-
 
 
 Swal.fire({

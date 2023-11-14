@@ -1,4 +1,4 @@
-import MongoDB from "../../lib/Mongo";
+import MongoDB from "../../persistence/dao/mongoDB/Mongo";
 
 export default async function() {
     const mongoDB = new MongoDB();
@@ -9,3 +9,6 @@ export default async function() {
     
     return { code: 200, data: resultado }
 }
+
+
+

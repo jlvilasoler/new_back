@@ -1,5 +1,5 @@
 import { MongoClient, ObjectId } from 'mongodb';
-import config from "../config/config";
+import config from "../../../config/config";
 
 
 export default class MongoDB {
@@ -33,11 +33,16 @@ export default class MongoDB {
             objeto = "chat";
         }
 
+        if(dbCollection === "TICKET") {
+            collection = dbCollection
+            objeto = "ticket";
+        }
+
         try {
             await this.client.connect();
             const db = this.client.db('ECOMMERCE00');
             const dataOnCollection = db.collection(collection);
-            const objetoCreado = await dataOnCollection.insertMany( obj );
+            const objetoCreado = await dataOnCollection.insertOne( obj );
             console.log(`${objeto} creado`);
             return objetoCreado;
         } catch (error: any) {
@@ -63,6 +68,16 @@ export default class MongoDB {
         if(dbCollection === "CHAT") {
             collection = dbCollection
             objeto = "chat";
+        }
+
+        if(dbCollection === "TICKET") {
+            collection = dbCollection
+            objeto = "ticket";
+        }
+
+        if(dbCollection === "USERS") {
+            collection = dbCollection
+            objeto = "users";
         }
 
         if (id === undefined) {
@@ -113,6 +128,11 @@ export default class MongoDB {
             objeto = "chat";
         }
 
+        if(dbCollection === "TICKET") {
+            collection = dbCollection
+            objeto = "ticket";
+        }
+
         try {
             await this.client.connect();
             const db = this.client.db('ECOMMERCE00');
@@ -145,6 +165,11 @@ export default class MongoDB {
             objeto = "chat";
         }
 
+        if(dbCollection === "TICKET") {
+            collection = dbCollection
+            objeto = "ticket";
+        }
+
         try {
             await this.client.connect();
             const db = this.client.db('ECOMMERCE00');
@@ -157,6 +182,51 @@ export default class MongoDB {
             return false;
         }
     }
+
+
+    async findById(id: any, dbCollection: string) {
+        let collection = "";
+        let objeto = "";
+    
+        if (dbCollection === "CARTS") {
+            collection = dbCollection
+            objeto = "carritos";
+        }
+    
+        if (dbCollection === "PRODUCTS") {
+            collection = dbCollection 
+            objeto = "productos";
+        }
+    
+        if (dbCollection === "CHAT") {
+            collection = dbCollection
+            objeto = "chat";
+        }
+    
+        if(dbCollection === "TICKET") {
+            collection = dbCollection
+            objeto = "ticket";
+        }
+
+        try {
+            await this.client.connect();
+            const db = this.client.db('ECOMMERCE00');
+            const dataOnCollection = db.collection(collection);
+
+            const objectId = new ObjectId(id);
+    
+            const result = await dataOnCollection.findOne( { _id: new ObjectId(id) });
+    
+            if (!result) {
+                console.log(`No se encontró el documento con _id: ${id}`);
+                return null;
+            }
+    
+            console.log(`Se lee la colección ${objeto} con _id: ${id}`);
+            return result;
+        } catch (error) {
+            console.error("Error al obtener el documento por _id:", error);
+            return null;
+        }
+    }
 }
-
-
