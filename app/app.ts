@@ -7,8 +7,9 @@ import mail from "./src/routers/mail.router";
 import cart from "./src/routers/cart.router";
 import viewsRouter from './src/routers/views.router';
 import product from './src/routers/product.router';
-import chat from './src/routers/chat.router'
-import ticket from './src/routers/ticket.router'
+import chat from './src/routers/chat.router';
+import ticket from './src/routers/ticket.router';
+
 
 const app = express();
 const router = express.Router();
@@ -24,20 +25,19 @@ app.use(express.static('public', { 'extensions': ['html', 'htm'] }));
 app.use(express.static('public', { 'extensions': ['js'] }));
 
 
-
 app.use('/api', viewsRouter);
 app.use('/api', mail);
 app.use('/api', cart);
-app.use('/api', product);
 app.use('/api', chat);
+
+app.use('/api', product);
 app.use('/api', ticket);
 
 
 app.use('/', viewsRouter);
-app.use('/', chat);
-app.use('/', cart);
 app.use('/', mail);
-
+app.use('/', cart);
+app.use('/', chat);
 
 
 

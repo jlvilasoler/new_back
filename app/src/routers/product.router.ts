@@ -1,8 +1,8 @@
 import { Router } from "express";
 import cors from 'cors';
 import { getProductController, getProductByIdController , createProductController, deleteProductController, updateProductController} from "../core";
-import { productModel } from "../persistence/dao/models/product.model";
-
+import ProductModel from "../persistence/dao/models/product.model";
+import express, { Request, Response } from 'express';
 
 const router = Router();
 
@@ -38,29 +38,39 @@ router.get("/get/product/:pid", async (req, res) => {
 });
 
 
-/*
-router.get('/', async (req, res) => {
-    const { limit, page, sort, query } = req.query;
 
-    const sortObjectMapper = {
-        asc: { price: 1 },
-        desc: { price: -1 },
-    };
 
-    const ModelQuery = query ?? {};
-    const modelLimit = limit ? parseInt(limit as string, 10) : 10;
-    const modelPage = page ? parseInt(page as string, 10) : 1;
-    const modelSort: { [key: string]: number } | undefined = sort && sortObjectMapper[sort as string];
 
-    const products = await productModel.paginate(ModelQuery, {
-        limit: modelLimit,
-        page: modelPage,
-        sort: modelSort,
-    });
-    res.send(products);
+// PAGINATE
+router.get('/', async (req: Request, res: Response) => {
+    try {
+        const { limit, page, sort, query } = req.query;
+
+        const sortObjectMapper: any = {
+            asc: { price: 1 },
+            desc: { price: -1 },
+        };
+
+        const modelQuery = query ?? {};
+        const modelLimit = limit ? parseInt(limit as string, 10) : 10;
+        const modelPage = page ? parseInt(page as string, 10) : 1;
+        const modelSort: { [key: string]: number } | undefined = sort && sortObjectMapper[sort as string];
+
+
+        const products = await ProductModel.paginate(modelQuery, {
+            limit: modelLimit,
+            page: modelPage,
+            sort: modelSort,
+        });
+
+        res.send(products);
+    } catch (error) {
+        console.error('Error en la paginación:', error);
+        res.status(500).send('Error en la paginación');
+    }
 });
 
 
-*/
-
 export default router;
+
+

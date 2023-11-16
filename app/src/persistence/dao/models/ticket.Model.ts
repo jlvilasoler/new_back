@@ -4,7 +4,7 @@ const ticketCollection = "TICKET";
 
 const ticketSchema = new mongoose.Schema({
     purchase_datetime: { type: Date, default: Date.now },
-    code: { type: String, required: true },
+    code: { type: String, required: true, unique: true },
     amount: { type: Number, required: true },
     ticket: { type: String, required: true },
 });

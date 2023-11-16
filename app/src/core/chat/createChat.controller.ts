@@ -5,7 +5,12 @@ import ChatService from "../../services/chat.service";
 const chatService = new ChatService();
 
 export default async function(req: Request) {
-    const chats = req.body;
+
+
+
+    type ChatInfo = { name: string, message: string }
+    const chats: ChatInfo[] = req.body
+    //const chats = req.body;
     //const mongoDB = new MongoDB();
     //const resultado = await mongoDB.create(chats, "CHAT");
 

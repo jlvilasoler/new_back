@@ -1,5 +1,5 @@
 const socket = io();
-console.log("hola");
+console.log("io");
 
 let usuario = '';
 
@@ -42,7 +42,7 @@ socket.on("nuevo-mensaje", async (mensajes) => {
         return `<p>${user} dijo: ${mensaje}</p>`;
     });
     contenido.innerHTML = mensajesMostrar.join('');
-    console.log(mensajes)
+    //console.log(mensajes)
 });
 
 

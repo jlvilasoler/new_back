@@ -33,19 +33,20 @@ router.get('/recover', (req, res) => {
 })
 
 
-
+//PRODUCTOS
 // Vista productos
 router.get("/products", cors(), async (req, res) => {
     const { data } = await getProductController();
     res.render("products", { products: data });
 });
 
+
+//CHAT
 // Vista chat
 router.get("/chat", cors(), async (req, res) => {
     const { data } = await getChatController();
     res.render("chat", { chats: data });
 });
-
 
 // Vista chat
 router.get("/chat", cors(), async (req, res) => {
@@ -53,6 +54,8 @@ router.get("/chat", cors(), async (req, res) => {
     res.render("chat", { chats: data });
 });
 
+
+//CART
 // Vista cart
 router.get("/cart", cors(), async (req, res) => {
     const { data } = await getCartController();

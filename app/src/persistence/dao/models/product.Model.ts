@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { mongoosePagination, Pagination } from "mongoose-paginate-ts";
+import * as mongoosePaginate from 'mongoose-paginate';
 
 const productCollection = "PRODUCTS";
 const productSchema = new mongoose.Schema( {
@@ -13,6 +13,6 @@ const productSchema = new mongoose.Schema( {
     category: {type: String, required: true}
 });
 
-productSchema.plugin(mongoosePagination);
-const productModel = mongoose.model(productCollection, productSchema);
-export { productModel };
+productSchema.plugin(mongoosePaginate);
+const ProductModel = mongoose.model(productCollection, productSchema);
+export default ProductModel;
